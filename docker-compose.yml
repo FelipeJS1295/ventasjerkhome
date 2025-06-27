@@ -13,6 +13,7 @@ services:
       - "8000:8000"
     volumes:
       - ./jhk-backend-simple:/app
+      - /var/www/imagenes_jhk:/var/www/imagenes_jhk:ro
     networks:
       - jerkhome-network
     depends_on:
