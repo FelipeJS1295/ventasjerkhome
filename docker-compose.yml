@@ -26,10 +26,8 @@ services:
       dockerfile: Dockerfile
     container_name: jerkhome-frontend
     restart: unless-stopped
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
+    expose:
+      - "80"
     networks:
       - jerkhome-network
 
@@ -53,22 +51,8 @@ services:
   #   networks:
   #     - jerkhome-network
 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: jerkhome-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./frontend/build:/usr/share/nginx/html
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/ssl:/etc/nginx/ssl
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - jerkhome-network
+  # Nginx ahora se ejecutará directamente en el host, no en un contenedor
+  # ya que necesitamos que maneje los puertos 80 y 443 directamente
 
 # No necesitamos el volumen de MySQL ya que usamos una base de datos externa
 # volumes:
