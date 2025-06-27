@@ -16,8 +16,9 @@ services:
       - /var/www/imagenes_jhk:/var/www/imagenes_jhk:ro
     networks:
       - jerkhome-network
-    depends_on:
-      - db
+    # No necesitamos depender de db ya que usamos una base de datos externa
+    # depends_on:
+    #   - db
 
   frontend:
     build:
@@ -32,24 +33,25 @@ services:
     networks:
       - jerkhome-network
 
-  db:
-    image: mysql:8.0
-    container_name: jerkhome-db
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "3306:3306"
-    networks:
-      - jerkhome-network
+# Se comenta la configuración de la base de datos ya que usaremos la existente
+  # db:
+  #   image: mysql:8.0
+  #   container_name: jerkhome-db
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./.env
+  #   environment:
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #     - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   ports:
+  #     - "3306:3306"
+  #   networks:
+  #     - jerkhome-network
 
   nginx:
     image: nginx:stable-alpine
@@ -68,8 +70,9 @@ services:
     networks:
       - jerkhome-network
 
-volumes:
-  mysql_data:
+# No necesitamos el volumen de MySQL ya que usamos una base de datos externa
+# volumes:
+#   mysql_data:
 
 networks:
   jerkhome-network:
